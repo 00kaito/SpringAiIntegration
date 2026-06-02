@@ -135,11 +135,21 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 
+                 MAVEN SUREFIRE PLUGIN
+                 Ensures compatibility with JUnit 5 and handles the execution of unit tests during the build.
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
             </plugin>
+            <!-- 
+                 JACOCO MAVEN PLUGIN
+                 Used for code coverage analysis. 
+                 It generates reports and enforces a minimum coverage ratio (95% in this project)
+                 to ensure high code quality and prevent untested code from being merged.
+            -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
