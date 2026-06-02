@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-B94A1B",
+  "description": "### **Task KNOWLEDGE-1.4: Create Health Check Endpoint**\n**Story Points:** 2  \n**Priority:** High  \n**Assignee:** Backend Developer  \n**Sprint:** 1\n\n#### **Business Context**\nOperations team needs to monitor system availability. Health check endpoint allows load balancers and monitoring tools to verify the application is running and dependencies (database, Redis) are accessible.\n\n#### **Technical Specifications**\n- Create HealthController.java at /api/health\n- Create HealthService.java with business logic\n- Implement GET /api/health endpoint returning:\n  `json\n  {\n     status: OK,\n    timestamp: 2026-06-01T13:00:00Z,\n    components: {\n      database: UP,\n      redis: UP\n    }\n  }\n  `\n- Add database connectivity check\n- Add Redis connectivity check\n- Use Spring Boot Actuator for health indicators\n\n#### **Acceptance Criteria**\n- [ ] GET /api/health returns HTTP 200\n- [ ] Response contains status, timestamp, and components\n- [ ] Database check returns UP when connected\n- [ ] Redis check returns UP when connected\n- [ ] Returns DOWN status when component unavailable",
+  "title": "### **Task KNOWLEDGE-1.4: Create Health Check Endpoint**",
+  "status": "IMPLEMENTING",
+  "iteration": 0,
+  "max_iterations": 6,
+  "stuck_counter": 0,
+  "criteria": [
+    {
+      "id": "c1",
+      "description": "GET /api/health returns HTTP 200 OK status",
+      "how_to_verify": "Execute a GET request to /api/health and check status code.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c2",
+      "description": "Response contains 'status', 'timestamp', and 'components' fields",
+      "how_to_verify": "Verify JSON response body keys.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c3",
+      "description": "'components' contains 'database' and 'redis' keys",
+      "how_to_verify": "Verify JSON response 'components' object keys.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c4",
+      "description": "Database check returns UP when connected",
+      "how_to_verify": "Check 'components.database' value in response when DB is available.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c5",
+      "description": "Redis check returns UP when connected",
+      "how_to_verify": "Check 'components.redis' value in response when Redis is available.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c6",
+      "description": "Status is 'DOWN' if any component is unavailable",
+      "how_to_verify": "Simulate a component failure and verify 'status' field in response.",
+      "status": "PENDING",
+      "evidence": null
+    }
+  ],
+  "history": [],
+  "architect_plan": "{\n  \"summary\": \"Implement a custom health check endpoint at /api/health that aggregates status from Spring Boot Actuator health indicators (Database and Redis) and returns it in a specific JSON format.\",\n  \"plan\": [\n    {\n      \"step\": 1,\n      \"title\": \"Add dependencies\",\n      \"description\": \"Add spring-boot-starter-actuator and spring-boot-starter-data-redis to pom.xml to enable health indicators and Redis support.\",\n      \"files_affected\": [\n        \"pom.xml\"\n      ],\n      \"type\": \"MODIFY\"\n    },\n    {\n      \"step\": 2,\n      \"title\": \"Create HealthResponse DTO\",\n      \"description\": \"Create a DTO class to represent the required JSON response structure, including status, timestamp, and component statuses.\",\n      \"files_affected\": [\n        \"src/main/java/com/haddad/springaiintegration/dto/HealthResponse.java\"\n      ],\n      \"type\": \"CREATE\"\n    },\n    {\n      \"step\": 3,\n      \"title\": \"Create HealthService\",\n      \"description\": \"Implement HealthService to fetch health status from Actuator's HealthContributorRegistry, specifically checking 'db' and 'redis' indicators.\",\n      \"files_affected\": [\n        \"src/main/java/com/haddad/springaiintegration/service/HealthService.java\"\n      ],\n      \"type\": \"CREATE\"\n    },\n    {\n      \"step\": 4,\n      \"title\": \"Create HealthController\",\n      \"description\": \"Implement HealthController with a GET mapping for /api/health that returns the HealthResponse DTO populated by HealthService.\",\n      \"files_affected\": [\n        \"src/main/java/com/haddad/springaiintegration/controller/HealthController.java\"\n      ],\n      \"type\": \"CREATE\"\n    },\n    {\n      \"step\": 5,\n      \"title\": \"Enable health indicators in configuration\",\n      \"description\": \"Ensure health indicators are enabled in application.properties if necessary (though usually enabled by default).\",\n      \"files_affected\": [\n        \"src/main/resources/application.properties\"\n      ],\n      \"type\": \"MODIFY\"\n    },\n    {\n      \"step\": 6,\n      \"title\": \"Create Integration Test\",\n      \"description\": \"Create HealthControllerIT.java to verify the /api/health endpoint returns 200 OK and the correct JSON structure when dependencies are UP.\",\n      \"files_affected\": [\n        \"src/test/java/com/haddad/springaiintegration/controller/HealthControllerIT.java\"\n      ],\n      \"type\": \"CREATE\"\n    }\n  ],\n  \"acceptance_criteria\": [\n    {\n      \"id\": \"c1\",\n      \"description\": \"GET /api/health returns HTTP 200 OK status\",\n      \"how_to_verify\": \"Execute a GET request to /api/health and check status code.\"\n    },\n    {\n      \"id\": \"c2\",\n      \"description\": \"Response contains 'status', 'timestamp', and 'components' fields\",\n      \"how_to_verify\": \"Verify JSON response body keys.\"\n    },\n    {\n      \"id\": \"c3\",\n      \"description\": \"'components' contains 'database' and 'redis' keys\",\n      \"how_to_verify\": \"Verify JSON response 'components' object keys.\"\n    },\n    {\n      \"id\": \"c4\",\n      \"description\": \"Database check returns UP when connected\",\n      \"how_to_verify\": \"Check 'components.database' value in response when DB is available.\"\n    },\n    {\n      \"id\": \"c5\",\n      \"description\": \"Redis check returns UP when connected\",\n      \"how_to_verify\": \"Check 'components.redis' value in response when Redis is available.\"\n    },\n    {\n      \"id\": \"c6\",\n      \"description\": \"Status is 'DOWN' if any component is unavailable\",\n      \"how_to_verify\": \"Simulate a component failure and verify 'status' field in response.\"\n    }\n  ],\n  \"risks\": [\n    \"Redis connection might fail if Docker service is not running during tests (though Spring Boot Docker Compose should handle it if enabled).\",\n    \"Package structure might need adjustment based on project conventions.\"\n  ]\n}",
+  "last_diff": "",
+  "task_start_sha": "99c1198c3febed285ee1b991bc9af5e339f7f071",
+  "human_feedback": "",
+  "fix_plan": "",
+  "created_at": 1780414834.3631423,
+  "updated_at": 1780414900.951678
+}

@@ -1,0 +1,95 @@
+{
+  "summary": "Implement a custom health check endpoint at /api/health that aggregates status from Spring Boot Actuator health indicators (Database and Redis) and returns it in a specific JSON format.",
+  "plan": [
+    {
+      "step": 1,
+      "title": "Add dependencies",
+      "description": "Add spring-boot-starter-actuator and spring-boot-starter-data-redis to pom.xml to enable health indicators and Redis support.",
+      "files_affected": [
+        "pom.xml"
+      ],
+      "type": "MODIFY"
+    },
+    {
+      "step": 2,
+      "title": "Create HealthResponse DTO",
+      "description": "Create a DTO class to represent the required JSON response structure, including status, timestamp, and component statuses.",
+      "files_affected": [
+        "src/main/java/com/haddad/springaiintegration/dto/HealthResponse.java"
+      ],
+      "type": "CREATE"
+    },
+    {
+      "step": 3,
+      "title": "Create HealthService",
+      "description": "Implement HealthService to fetch health status from Actuator's HealthContributorRegistry, specifically checking 'db' and 'redis' indicators.",
+      "files_affected": [
+        "src/main/java/com/haddad/springaiintegration/service/HealthService.java"
+      ],
+      "type": "CREATE"
+    },
+    {
+      "step": 4,
+      "title": "Create HealthController",
+      "description": "Implement HealthController with a GET mapping for /api/health that returns the HealthResponse DTO populated by HealthService.",
+      "files_affected": [
+        "src/main/java/com/haddad/springaiintegration/controller/HealthController.java"
+      ],
+      "type": "CREATE"
+    },
+    {
+      "step": 5,
+      "title": "Enable health indicators in configuration",
+      "description": "Ensure health indicators are enabled in application.properties if necessary (though usually enabled by default).",
+      "files_affected": [
+        "src/main/resources/application.properties"
+      ],
+      "type": "MODIFY"
+    },
+    {
+      "step": 6,
+      "title": "Create Integration Test",
+      "description": "Create HealthControllerIT.java to verify the /api/health endpoint returns 200 OK and the correct JSON structure when dependencies are UP.",
+      "files_affected": [
+        "src/test/java/com/haddad/springaiintegration/controller/HealthControllerIT.java"
+      ],
+      "type": "CREATE"
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "c1",
+      "description": "GET /api/health returns HTTP 200 OK status",
+      "how_to_verify": "Execute a GET request to /api/health and check status code."
+    },
+    {
+      "id": "c2",
+      "description": "Response contains 'status', 'timestamp', and 'components' fields",
+      "how_to_verify": "Verify JSON response body keys."
+    },
+    {
+      "id": "c3",
+      "description": "'components' contains 'database' and 'redis' keys",
+      "how_to_verify": "Verify JSON response 'components' object keys."
+    },
+    {
+      "id": "c4",
+      "description": "Database check returns UP when connected",
+      "how_to_verify": "Check 'components.database' value in response when DB is available."
+    },
+    {
+      "id": "c5",
+      "description": "Redis check returns UP when connected",
+      "how_to_verify": "Check 'components.redis' value in response when Redis is available."
+    },
+    {
+      "id": "c6",
+      "description": "Status is 'DOWN' if any component is unavailable",
+      "how_to_verify": "Simulate a component failure and verify 'status' field in response."
+    }
+  ],
+  "risks": [
+    "Redis connection might fail if Docker service is not running during tests (though Spring Boot Docker Compose should handle it if enabled).",
+    "Package structure might need adjustment based on project conventions."
+  ]
+}

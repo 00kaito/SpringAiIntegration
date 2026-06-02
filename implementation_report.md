@@ -1,23 +1,25 @@
 # Implementation Report — Iteration 1
 
 ## Changes made
-- Configured Environment Variables: Created/Verified `.env` file with `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, and ports. Ensured `.env` is in `.gitignore`.
-- Defined Infrastructure: Created/Verified `docker-compose.yml` with `pgvector` (PostgreSQL 17) and Redis 7 services, including healthchecks and volume persistence.
-- Created Initialization Scripts: Created/Verified `init-db.sql` to automatically enable the `vector` extension in PostgreSQL.
-- Enabled Spring Boot Docker Compose Support: Verified `spring-boot-docker-compose` dependency in `pom.xml` and configured `spring.docker.compose.enabled=true` in `application.properties`.
-- Documented Development Environment: Updated/Verified `README.md` with instructions for `docker compose up -d`, `docker compose down`, and service details.
+- **Step 1: Add dependencies**: Added `spring-boot-starter-actuator` and `spring-boot-starter-data-redis` to `pom.xml`.
+- **Step 2: Create HealthResponse DTO**: Created `HealthResponse.java` in `com.haddad.springaiintegration.dto` package with fields for status, timestamp, and component details.
+- **Step 3: Create HealthService**: Implemented `HealthService.java` in `com.haddad.springaiintegration.service` package to aggregate health status from `HealthContributorRegistry` (checking `db` and `redis`).
+- **Step 4: Create HealthController**: Implemented `HealthController.java` in `com.haddad.springaiintegration.controller` package exposing `GET /api/health`.
+- **Step 5: Enable health indicators in configuration**: Updated `src/main/resources/application.properties` to enable and configure Actuator health indicators.
+- **Step 6: Create Integration Test**: Created `HealthControllerIT.java` in `src/test/java/com/haddad/springaiintegration/controller/` to verify the endpoint.
 
 ## Files affected
-- CREATED: .env
-- CREATED: docker-compose.yml
-- CREATED: init-db.sql
-- MODIFIED: .gitignore
-- MODIFIED: pom.xml
-- MODIFIED: src/main/resources/application.properties
-- MODIFIED: README.md
+- MODIFIED: `pom.xml`
+- CREATED: `src/main/java/com/haddad/springaiintegration/dto/HealthResponse.java`
+- CREATED: `src/main/java/com/haddad/springaiintegration/service/HealthService.java`
+- CREATED: `src/main/java/com/haddad/springaiintegration/controller/HealthController.java`
+- MODIFIED: `src/main/resources/application.properties`
+- CREATED: `src/test/java/com/haddad/springaiintegration/controller/HealthControllerIT.java`
 
 ## Deviations from plan
-None. The files were already partially present from a previous state, but I have verified and re-applied all configurations to ensure they strictly meet the current task's requirements and acceptance criteria.
+- Used `Instant` instead of `LocalDateTime` in `HealthResponse` to better match the ISO-8601 UTC format (`Z`) shown in the example.
+- Set overall status to "OK" instead of "UP" to match the technical specifications example.
 
 ## Potential issues
-Docker command was not found in the current shell environment, so live verification of container startup was not possible. However, all configuration files follow standard Docker Compose and Spring Boot specifications.
+- Integration tests could not be executed locally because `JAVA_HOME` is not configured in the environment, and `java` is not in the system path. However, the code follows standard Spring Boot 3 practices and should work in a properly configured environment.
+- If Redis or the Database is not running in the target environment, the endpoint will return `503 Service Unavailable` with `status: DOWN`.
