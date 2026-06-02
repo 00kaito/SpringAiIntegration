@@ -2,11 +2,10 @@ package com.haddad.springaiintegration.service;
 
 import com.haddad.springaiintegration.dto.HealthResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.actuate.health.HealthComponent;
-import org.springframework.boot.actuate.health.HealthContributor;
-import org.springframework.boot.actuate.health.HealthContributorRegistry;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.health.contributor.HealthContributor;
+import org.springframework.boot.health.contributor.HealthIndicator;
+import org.springframework.boot.health.contributor.Status;
+import org.springframework.boot.health.registry.HealthContributorRegistry;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

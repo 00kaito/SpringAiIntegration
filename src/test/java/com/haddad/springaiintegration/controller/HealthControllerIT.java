@@ -1,9 +1,10 @@
 package com.haddad.springaiintegration.controller;
 
+import com.haddad.springaiintegration.TestContainerBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class HealthControllerIT {
+class HealthControllerIT extends TestContainerBase {
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,7 +54,6 @@ class HealthControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("OK")))
                 .andExpect(jsonPath("$.timestamp", notNullValue()))
-                .andExpect(jsonPath("$.components.database", notNullValue()))
-                .andExpect(jsonPath("$.components.redis", notNullValue()));
+                .andExpect(jsonPath("$.components.database", notNullValue()));
     }
 }

@@ -1,4 +1,4 @@
-package com.company.knowledgeassist;
+package com.haddad.springaiintegration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * - Random Port: {@code webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT} is used 
  *   to avoid port conflicts during concurrent test execution.
  */
-@SpringBootTest(classes = com.haddad.springaiintegration.SpringAiIntegrationApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = SpringAiIntegrationApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class ExampleIntegrationTest extends TestContainerBase {
 
