@@ -48,3 +48,27 @@ This project uses `spring-boot-docker-compose`. When you run the application via
 ### Persistence
 
 Data is persisted using Docker volumes. PostgreSQL data is stored in the `postgres-data` volume.
+
+## Testing
+
+This project uses JUnit 5, Mockito, and Testcontainers for testing.
+
+### Running Tests
+
+To run all tests and generate a coverage report:
+
+```bash
+mvn test
+```
+
+### Coverage Reports
+
+After running the tests, the JaCoCo coverage report can be found at:
+`target/site/jacoco/index.html`
+
+The project has a target code coverage of **95%**.
+
+### Integration Tests
+
+Integration tests use **Testcontainers** to spin up real instances of PostgreSQL and Redis. Ensure Docker is running when executing integration tests.
+

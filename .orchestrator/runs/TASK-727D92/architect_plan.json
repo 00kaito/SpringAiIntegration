@@ -1,0 +1,83 @@
+{
+  "summary": "Implement a standardized unit testing framework by updating pom.xml with Spring Boot Test, Testcontainers, and JaCoCo, followed by creating base classes and isolated controller tests with mocking in the requested package structure.",
+  "plan": [
+    {
+      "step": 1,
+      "title": "Add test dependencies to pom.xml",
+      "description": "Add spring-boot-starter-test, org.testcontainers:junit-jupiter, and jacoco-maven-plugin to pom.xml to support JUnit 5, Mockito, and Testcontainers.",
+      "files_affected": [
+        "pom.xml"
+      ],
+      "type": "MODIFY"
+    },
+    {
+      "step": 2,
+      "title": "Configure plugins in pom.xml",
+      "description": "Configure maven-surefire-plugin for JUnit 5 compatibility and jacoco-maven-plugin for coverage reporting with a target of 95% for new code.",
+      "files_affected": [
+        "pom.xml"
+      ],
+      "type": "MODIFY"
+    },
+    {
+      "step": 3,
+      "title": "Create package and base classes",
+      "description": "Create the requested package structure src/test/java/com/company/knowledgeassist and implement BaseUnitTest for Mockito setup and TestContainerBase for integration test examples.",
+      "files_affected": [
+        "src/test/java/com/company/knowledgeassist/BaseUnitTest.java",
+        "src/test/java/com/company/knowledgeassist/TestContainerBase.java"
+      ],
+      "type": "CREATE"
+    },
+    {
+      "step": 4,
+      "title": "Implement HealthController unit test",
+      "description": "Create HealthControllerTest using @WebMvcTest and @MockBean to verify controller logic in isolation from HealthService.",
+      "files_affected": [
+        "src/test/java/com/company/knowledgeassist/controller/HealthControllerTest.java"
+      ],
+      "type": "CREATE"
+    },
+    {
+      "step": 5,
+      "title": "Update README.md",
+      "description": "Add a 'Testing' section to README.md documenting how to run tests using Maven and how to access JaCoCo coverage reports.",
+      "files_affected": [
+        "README.md"
+      ],
+      "type": "MODIFY"
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "c1",
+      "description": "pom.xml contains spring-boot-starter-test, org.testcontainers:junit-jupiter, and jacoco-maven-plugin.",
+      "how_to_verify": "Read pom.xml and confirm the presence of these dependencies and plugins."
+    },
+    {
+      "id": "c2",
+      "description": "Package src/test/java/com/company/knowledgeassist and base classes exist.",
+      "how_to_verify": "Verify existence of BaseUnitTest.java and TestContainerBase.java in the specified package."
+    },
+    {
+      "id": "c3",
+      "description": "HealthControllerTest mocks HealthService and verifies /api/health endpoint.",
+      "how_to_verify": "Verify content of HealthControllerTest.java for @MockBean usage and MockMvc assertions."
+    },
+    {
+      "id": "c4",
+      "description": "JaCoCo configuration is present in pom.xml with execution goals for report generation.",
+      "how_to_verify": "Check jacoco-maven-plugin section in pom.xml."
+    },
+    {
+      "id": "c5",
+      "description": "README.md contains instructions for executing 'mvn test'.",
+      "how_to_verify": "Verify README.md has a 'Testing' section with the correct Maven command."
+    }
+  ],
+  "risks": [
+    "Tests cannot be executed in the current environment because Java/Maven is not in the system path as per implementation report.",
+    "Testcontainers requires a functional Docker environment which may not be available on all development machines.",
+    "The futuristic Spring Boot version (4.1.0-SNAPSHOT) may result in dependency resolution issues."
+  ]
+}
