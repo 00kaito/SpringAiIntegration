@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-8C5179",
+  "description": "### **Task KNOWLEDGE-1.2: Setup Docker Compose for Local Development**\n**Story Points:** 2  \n**Priority:** Highest  \n**Assignee:** Backend Developer  \n**Sprint:** Sprint 1\n\n#### **Business Context**\nDevelopers need a consistent local development environment. Docker Compose will provide PostgreSQL database and Redis cache without requiring manual installation, reducing onboarding time from hours to minutes.\n\n#### **Technical Specifications**\n- Create docker-compose.yml with:\n  - **PostgreSQL service:**\n    - Image: pgvector/pgvector:pg17\n    - Environment: POSTGRES_DB=knowledgeassist, POSTGRES_USER=postgres, POSTGRES_PASSWORD=postgres\n    - Port: 5432:5432\n    - Volume: postgres-data:/var/lib/postgresql/data\n  - **Redis service:**\n    - Image: redis:7-alpine\n    - Port: 6379:6379\n- Create docker-compose.override.yml for development-specific settings\n- Add volumes for data persistence\n- Document Docker commands in README\n\n#### **Acceptance Criteria**\n- [ ] docker-compose up -d starts all services successfully\n- [ ] PostgreSQL accessible at localhost:5432\n- [ ] Redis accessible at localhost:6379\n- [ ] docker-compose down stops and removes containers\n- [ ] Data persists after container restart (volumes working)",
+  "title": "### **Task KNOWLEDGE-1.2: Setup Docker Compose for Local Development**",
+  "status": "IMPLEMENTING",
+  "iteration": 0,
+  "max_iterations": 6,
+  "stuck_counter": 0,
+  "criteria": [
+    {
+      "id": "c1",
+      "description": "File `docker-compose.yml` exists and defines 'postgres' and 'redis' services.",
+      "how_to_verify": "Check existence of `docker-compose.yml` and its content for service definitions.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c2",
+      "description": "File `.env` contains `POSTGRES_DB`, `POSTGRES_USER`, and `POSTGRES_PASSWORD`.",
+      "how_to_verify": "Verify `.env` file content locally (not in repo).",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c3",
+      "description": "File `init-db.sql` contains `CREATE EXTENSION IF NOT EXISTS vector;`.",
+      "how_to_verify": "Check content of `init-db.sql`.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c4",
+      "description": "Dependency `spring-boot-docker-compose` is present in `pom.xml`.",
+      "how_to_verify": "Check `pom.xml` for the dependency entry.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c5",
+      "description": "Property `spring.docker.compose.enabled` is set to `true` in `application.properties`.",
+      "how_to_verify": "Check `src/main/resources/application.properties` for the property.",
+      "status": "PENDING",
+      "evidence": null
+    },
+    {
+      "id": "c6",
+      "description": "`README.md` contains `docker compose up -d` instruction.",
+      "how_to_verify": "Check `README.md` content for the command.",
+      "status": "PENDING",
+      "evidence": null
+    }
+  ],
+  "history": [],
+  "architect_plan": "{\n  \"summary\": \"Implement a robust local development environment using Docker Compose with PostgreSQL (pgvector) and Redis, including Spring Boot integration and environment-based configuration.\",\n  \"plan\": [\n    {\n      \"step\": 1,\n      \"title\": \"Configure Environment Variables\",\n      \"description\": \"Create a .env file to manage database credentials and ports, and update .gitignore to exclude it from version control.\",\n      \"files_affected\": [\n        \".env\",\n        \".gitignore\"\n      ],\n      \"type\": \"CREATE | MODIFY\"\n    },\n    {\n      \"step\": 2,\n      \"title\": \"Define Infrastructure with Docker Compose\",\n      \"description\": \"Create docker-compose.yml with PostgreSQL (pgvector/pgvector:pg17) and Redis (redis:7-alpine) services, including healthchecks and volume persistence.\",\n      \"files_affected\": [\n        \"docker-compose.yml\"\n      ],\n      \"type\": \"CREATE\"\n    },\n    {\n      \"step\": 3,\n      \"title\": \"Create Initialization Scripts\",\n      \"description\": \"Create init-db.sql to enable the 'vector' extension in PostgreSQL automatically on startup.\",\n      \"files_affected\": [\n        \"init-db.sql\"\n      ],\n      \"type\": \"CREATE\"\n    },\n    {\n      \"step\": 4,\n      \"title\": \"Enable Spring Boot Docker Compose Support\",\n      \"description\": \"Add 'spring-boot-docker-compose' dependency to pom.xml and configure application.properties to enable automatic service management.\",\n      \"files_affected\": [\n        \"pom.xml\",\n        \"src/main/resources/application.properties\"\n      ],\n      \"type\": \"MODIFY\"\n    },\n    {\n      \"step\": 5,\n      \"title\": \"Document Development Environment\",\n      \"description\": \"Update README.md with instructions on how to start, stop, and manage the local infrastructure using Docker Compose.\",\n      \"files_affected\": [\n        \"README.md\"\n      ],\n      \"type\": \"MODIFY\"\n    }\n  ],\n  \"acceptance_criteria\": [\n    {\n      \"id\": \"c1\",\n      \"description\": \"File `docker-compose.yml` exists and defines 'postgres' and 'redis' services.\",\n      \"how_to_verify\": \"Check existence of `docker-compose.yml` and its content for service definitions.\"\n    },\n    {\n      \"id\": \"c2\",\n      \"description\": \"File `.env` contains `POSTGRES_DB`, `POSTGRES_USER`, and `POSTGRES_PASSWORD`.\",\n      \"how_to_verify\": \"Verify `.env` file content locally (not in repo).\"\n    },\n    {\n      \"id\": \"c3\",\n      \"description\": \"File `init-db.sql` contains `CREATE EXTENSION IF NOT EXISTS vector;`.\",\n      \"how_to_verify\": \"Check content of `init-db.sql`.\"\n    },\n    {\n      \"id\": \"c4\",\n      \"description\": \"Dependency `spring-boot-docker-compose` is present in `pom.xml`.\",\n      \"how_to_verify\": \"Check `pom.xml` for the dependency entry.\"\n    },\n    {\n      \"id\": \"c5\",\n      \"description\": \"Property `spring.docker.compose.enabled` is set to `true` in `application.properties`.\",\n      \"how_to_verify\": \"Check `src/main/resources/application.properties` for the property.\"\n    },\n    {\n      \"id\": \"c6\",\n      \"description\": \"`README.md` contains `docker compose up -d` instruction.\",\n      \"how_to_verify\": \"Check `README.md` content for the command.\"\n    }\n  ],\n  \"risks\": [\n    \"Docker might not be installed or running on the developer's machine.\",\n    \"Port conflicts if 5432 or 6379 are already in use by local services.\",\n    \"Potential version mismatch between local Docker/Docker Compose and the defined images.\"\n  ]\n}",
+  "last_diff": "",
+  "task_start_sha": "7557bf81b5afadfad332d561482f04d1b09d8eff",
+  "human_feedback": "",
+  "fix_plan": "",
+  "created_at": 1780413088.7367308,
+  "updated_at": 1780413131.4436069
+}
